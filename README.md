@@ -1,1 +1,1 @@
-<h1>Tests for SauceDemo</h1>>
+<h1>Tests for SauceDemo</h1>

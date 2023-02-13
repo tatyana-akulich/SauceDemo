@@ -47,7 +47,7 @@ public class CartTest extends BaseTest {
     }
 
     @Test(dataProvider = "products")
-    public void isItemInCart(String productName) {
+    public void checkItemInCart(String productName) {
         addItemToCart(productName);
         passToCart();
         String itemNameInCartLocator = "//div[text()='%s']";
@@ -58,7 +58,7 @@ public class CartTest extends BaseTest {
     }
 
     @Test(dataProvider = "products")
-    public void isPriceInCartRight(String productName) {
+    public void checkPriceInCart(String productName) {
         String expectedPrice = driver.findElement(By.xpath(String.format(ITEM_PRICE_LOCATOR_PATTERN, productName))).getText();
         addItemToCart(productName);
         passToCart();

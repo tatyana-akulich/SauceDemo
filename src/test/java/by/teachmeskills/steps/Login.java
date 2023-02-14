@@ -1,6 +1,5 @@
 package by.teachmeskills.steps;
 
-import by.teachmeskills.LoginTest;
 import by.teachmeskills.utils.Credentials;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

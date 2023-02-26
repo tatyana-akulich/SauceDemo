@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HeaderPageObjectTest extends BaseTest {
+public class HeaderTest extends BaseTest {
 
     @Test
     public void checkAmountOfItemsInCartIcon() {

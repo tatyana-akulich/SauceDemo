@@ -17,4 +17,5 @@ public class Login {
         driver.findElement(By.id("password")).sendKeys(validCredentials.getPassword());
         driver.findElement(By.id("login-button")).submit();
     }
+
 }

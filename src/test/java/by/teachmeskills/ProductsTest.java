@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProductsPageObjectTest extends BaseTest {
+public class ProductsTest extends BaseTest {
     @Test
     public void checkAmountOfProducts() {
         assertThat(login().getProducts())

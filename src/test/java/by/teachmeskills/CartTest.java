@@ -1,11 +1,13 @@
 package by.teachmeskills;
 
 import by.teachmeskills.steps.Login;
+import by.teacmeskills.page.CartPage;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -83,5 +85,24 @@ public class CartTest extends BaseTest {
     private void passToProductList() {
         driver.findElement(By.id("react-burger-menu-btn")).click();
         driver.findElement(By.id("inventory_sidebar_link")).click();
+    }
+
+    @Test
+    public void checkContinueShoppingButton(){
+        assertThat(login().openCart().clickContinueShopping().isPageOpened())
+                .as("Product page should be opened after clicking ContinueShopping button")
+                .isTrue();
+    }
+
+    @Test
+    public void checkAddRemoveProductButton(){
+        String productName = "Sauce Labs Bolt T-Shirt";
+        CartPage cartPage = login().addProductToCart(productName).openCart();
+        assertThat(cartPage.isItemInCart(productName))
+                .as("Added product should be displayed in cart")
+                .isTrue();
+        assertThat(cartPage.removeItem(productName).isItemInCart(productName))
+                .as("Removed product shouldn't be displayed in cart")
+                .isFalse();
     }
 }

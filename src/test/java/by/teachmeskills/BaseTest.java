@@ -1,5 +1,7 @@
 package by.teachmeskills;
 
+import by.teacmeskills.page.LoginPage;
+import by.teacmeskills.page.ProductsPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,7 +18,7 @@ public class BaseTest {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10L));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5L));
     }
 
     @AfterClass
@@ -24,5 +26,9 @@ public class BaseTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    protected ProductsPage login() {
+        return new LoginPage(driver).open().loginAsStandardUser();
     }
 }

@@ -1,5 +1,6 @@
 package by.teachmeskills;
 
+import io.qameta.allure.*;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
@@ -9,6 +10,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductsTest extends BaseTest {
+    @Epic("Functionality of products page")
+    @Feature("Depiction of elements on products page")
+    @Story("User should be able to see 6 products on each page")
     @Test
     public void checkAmountOfProducts() {
         assertThat(login().getProducts())
@@ -18,6 +22,7 @@ public class ProductsTest extends BaseTest {
                 .hasSize(6);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Test
     public void checkProductPresentOnProductPage() {
         String productName = "Sauce Labs Backpack";

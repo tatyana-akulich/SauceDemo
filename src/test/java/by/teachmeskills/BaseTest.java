@@ -5,6 +5,7 @@ import by.teacmeskills.page.ProductsPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -17,7 +18,10 @@ public class BaseTest {
     @BeforeClass
     public void setUp(ITestContext testContext) {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        driver = new ChromeDriver(options);
+
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5L));
         testContext.setAttribute("driver", driver);

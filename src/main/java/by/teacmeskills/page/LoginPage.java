@@ -1,8 +1,11 @@
 package by.teacmeskills.page;
 
+import by.teacmeskills.util.PropertiesLoader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.Properties;
 
 public class LoginPage extends BasePage {
     private static final By USER_NAME = By.id("user-name");
@@ -16,7 +19,8 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage open() {
-        driver.get("https://www.saucedemo.com/");
+        Properties properties = PropertiesLoader.loadProperties();
+        driver.get(properties.getProperty("base.url"));
         return new LoginPage(driver);
     }
 

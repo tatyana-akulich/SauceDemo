@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Smoke Test Suit">
+<suite name="Smoke Test Suit" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="by.teacmeskills.util.TestListener"/>
     </listeners>
-    <test name="Login tests">
+    <test name="Header + product page tests">
         <classes>
+            <class name="by.teachmeskills.LoginTest">
+                <methods>
+                    <include name="checkValidCredentials()"/>
+                </methods>
+            </class>
             <class name="by.teachmeskills.HeaderTest"/>
+            <class name="by.teachmeskills.ProductsTest"/>
+        </classes>
+    </test>
+    <test name="Cart tests">
+        <classes>
+            <class name="by.teachmeskills.CartTest"/>
         </classes>
     </test>
 </suite>

@@ -1,6 +1,7 @@
 package by.teachmeskills;
 
 import by.teachmeskills.utils.Credentials;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -14,6 +15,7 @@ public class LoginTest extends BaseTest {
         driver.get("https://www.saucedemo.com/");
     }
 
+    @Step("Login as standard user")
     @Test
     public void checkValidCredentials() {
         submitCredentials(Credentials.getValidCredentials());

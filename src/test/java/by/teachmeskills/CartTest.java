@@ -2,6 +2,9 @@ package by.teachmeskills;
 
 import by.teachmeskills.steps.Login;
 import by.teacmeskills.page.CartPage;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -48,6 +51,8 @@ public class CartTest extends BaseTest {
                 "Add to cart button should be displayed");
     }
 
+    @Step("Add item to cart")
+    @Severity(SeverityLevel.BLOCKER)
     @Test(dataProvider = "products")
     public void checkItemInCart(String productName) {
         addItemToCart(productName);
@@ -88,14 +93,14 @@ public class CartTest extends BaseTest {
     }
 
     @Test
-    public void checkContinueShoppingButton(){
+    public void checkContinueShoppingButton() {
         assertThat(login().openCart().clickContinueShopping().isPageOpened())
                 .as("Product page should be opened after clicking ContinueShopping button")
                 .isTrue();
     }
 
     @Test
-    public void checkAddRemoveProductButton(){
+    public void checkAddRemoveProductButton() {
         String productName = "Sauce Labs Bolt T-Shirt";
         CartPage cartPage = login().addProductToCart(productName).openCart();
         assertThat(cartPage.isItemInCart(productName))

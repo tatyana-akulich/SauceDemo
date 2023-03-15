@@ -18,6 +18,8 @@
     <test name="Cart tests">
         <classes>
             <class name="by.teachmeskills.CartTest"/>
+            <class name="by.teachmeskills.CheckoutTest"/>
+            <class name="by.teachmeskills.SuccessOrderFlowTest"/>
         </classes>
     </test>
 </suite>

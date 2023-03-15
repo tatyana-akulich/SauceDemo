@@ -2,6 +2,7 @@ package by.teachmeskills;
 
 import by.teachmeskills.steps.Login;
 import by.teacmeskills.page.CartPage;
+import by.teacmeskills.page.ProductsPage;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
@@ -16,14 +17,6 @@ import static org.testng.Assert.assertTrue;
 
 public class CartTest extends BaseTest {
 
-    private final static String ITEM_CARD_LOCATOR_PATTERN = "//div[text()='%s']/ancestor::div[@class = 'inventory_item']";
-    private final static String ITEM_IN_CART_LOCATOR_PATTERN = "//div[text()='%s']/ancestor::div[@class='cart_item']";
-    private final static String REMOVE_FROM_CART_LOCATOR_PATTERN = ITEM_CARD_LOCATOR_PATTERN + "//button[text()='Remove']";
-    private final static String ADD_TO_CART_LOCATOR_PATTERN = ITEM_CARD_LOCATOR_PATTERN + "//button[text()='Add to cart']";
-    private final static String ITEM_PRICE_LOCATOR_PATTERN = ITEM_CARD_LOCATOR_PATTERN + "//div[@class='inventory_item_price']";
-    private final static String ITEM_PRICE_IN_CART_LOCATOR_PATTERN = ITEM_IN_CART_LOCATOR_PATTERN + "//div[@class='inventory_item_price']";
-    private final static String ITEM_NAME_IN_CART_LOCATOR = "//div[text()='%s']";
-
     @BeforeClass
     public void passRegistration() {
         Login login = new Login();
@@ -37,17 +30,19 @@ public class CartTest extends BaseTest {
 
     @Test(dataProvider = "products")
     public void checkAddItemToCartButtonAfterClickChangesToRemove(String productName) {
-        addItemToCart(productName);
-        assertTrue(driver.findElement(By.xpath(String.format(REMOVE_FROM_CART_LOCATOR_PATTERN, productName))).isDisplayed(),
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.addItemToCart(productName);
+        assertTrue(new ProductsPage(driver).getDeleteButton(productName).isDisplayed(),
                 "Add button wasn't changed to remove");
-        removeItemFromCartFromProductListPage(productName);
+        productsPage.removeItemFromCartFromProductListPage(productName);
     }
 
     @Test(dataProvider = "products")
     public void checkRemoveButtonAfterClickChangesToAddToCart(String productName) {
-        addItemToCart(productName);
-        removeItemFromCartFromProductListPage(productName);
-        assertTrue(driver.findElement(By.xpath(String.format(ADD_TO_CART_LOCATOR_PATTERN, productName))).isDisplayed(),
+        new ProductsPage(driver)
+                .addItemToCart(productName)
+                .removeItemFromCartFromProductListPage(productName);
+        assertTrue(new ProductsPage(driver).getAddButton(productName).isDisplayed(),
                 "Add to cart button should be displayed");
     }
 
@@ -55,42 +50,32 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Test(dataProvider = "products")
     public void checkItemInCart(String productName) {
-        addItemToCart(productName);
-        passToCart();
+        CartPage cartPage = new ProductsPage(driver)
+                .addItemToCart(productName)
+                .passToCart();
         String itemNameInCartLocator = "//div[text()='%s']";
         assertTrue(driver.findElement(By.xpath(String.format(itemNameInCartLocator, productName))).isDisplayed(),
                 "There is no such item in the cart");
-        passToProductList();
-        removeItemFromCartFromProductListPage(productName);
+        cartPage.clickContinueShopping();
+        new ProductsPage(driver).removeItemFromCartFromProductListPage(productName);
     }
 
     @Test(dataProvider = "products")
     public void checkPriceInCart(String productName) {
-        String expectedPrice = driver.findElement(By.xpath(String.format(ITEM_PRICE_LOCATOR_PATTERN, productName))).getText();
-        addItemToCart(productName);
-        passToCart();
-        String actualPrice = driver.findElement(By.xpath(String.format(ITEM_PRICE_IN_CART_LOCATOR_PATTERN, productName))).getText();
+        String expectedPrice = new ProductsPage(driver).getPrice(productName);
+        CartPage cartPage = new ProductsPage(driver)
+                .addItemToCart(productName)
+                .passToCart();
+        String actualPrice = new CartPage(driver).getItemPrice(productName);
         assertEquals(actualPrice, expectedPrice, "Prices in catalog and in the cart are different");
-        passToProductList();
-        removeItemFromCartFromProductListPage(productName);
+        cartPage.clickContinueShopping();
+        new ProductsPage(driver).removeItemFromCartFromProductListPage(productName);
     }
 
-    private void addItemToCart(String name) {
-        driver.findElement(By.xpath(String.format(ADD_TO_CART_LOCATOR_PATTERN, name))).click();
-    }
-
-    private void removeItemFromCartFromProductListPage(String name) {
-        driver.findElement(By.xpath(String.format(REMOVE_FROM_CART_LOCATOR_PATTERN, name))).click();
-    }
-
-    private void passToCart() {
-        driver.findElement(By.id("shopping_cart_container")).click();
-    }
-
-    private void passToProductList() {
+    /*private void passToProductList() {
         driver.findElement(By.id("react-burger-menu-btn")).click();
         driver.findElement(By.id("inventory_sidebar_link")).click();
-    }
+    }*/
 
     @Test
     public void checkContinueShoppingButton() {

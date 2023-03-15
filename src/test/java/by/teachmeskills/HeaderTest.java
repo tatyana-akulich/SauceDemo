@@ -23,6 +23,6 @@ public class HeaderTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void checkResetOption() {
-        assertThat(login().addProductToCart("Sauce Labs Bike Light").resetData().getAmountOfItemsInCart()).isEqualTo(1);
+        assertThat(login().addProductToCart("Sauce Labs Bike Light").resetData().getAmountOfItemsInCart()).isEqualTo(0);
     }
 }

@@ -2,6 +2,7 @@ package by.teachmeskills;
 
 import by.teacmeskills.page.CheckoutCompletePage;
 import by.teacmeskills.page.LoginPage;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,9 +13,13 @@ public class SuccessOrderFlowTest extends BaseTest {
 
     @Test
     public void checkSuccessOneProductOrderFlow() {
+        String productName = System.getenv("ProductName");
+        if (StringUtils.isEmpty(productName)) {
+            productName = SAUCE_LABS_ONESIE;
+        }
         CheckoutCompletePage finalPage = new LoginPage(driver).open()
                 .loginAsStandardUser()
-                .addProductToCart(SAUCE_LABS_ONESIE)
+                .addProductToCart(productName)
                 .openCart()
                 .clickCheckout()
                 .fillInCheckoutInfo(faker.name().firstName(), faker.name().lastName(), faker.address().zipCode())

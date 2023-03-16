@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Smoke Test Suit" parallel="tests" thread-count="2">
+<suite name="Sauce Demo Suit" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="by.teacmeskills.util.TestListener"/>
     </listeners>
@@ -15,7 +15,7 @@
             <class name="by.teachmeskills.ProductsTest"/>
         </classes>
     </test>
-    <test name="Cart tests">
+    <test name="Cart and checkout tests">
         <classes>
             <class name="by.teachmeskills.CartTest"/>
             <class name="by.teachmeskills.CheckoutTest"/>

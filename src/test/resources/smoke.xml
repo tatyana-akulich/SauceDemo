@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Smoke Test Suit" parallel="tests" thread-count="2">
+    <listeners>
+        <listener class-name="by.teacmeskills.util.TestListener"/>
+    </listeners>
+    <test name="Header + product page tests">
+        <classes>
+            <class name="by.teachmeskills.LoginTest">
+                <methods>
+                    <include name="checkValidCredentials()"/>
+                </methods>
+            </class>
+            <class name="by.teachmeskills.HeaderTest">
+                   <methods>
+                       <include name="checkResetOption()"/>
+                   </methods>
+            </class>
+            <class name="by.teachmeskills.ProductsTest">
+                <methods>
+                    <include name="checkProductPresentOnProductPage()"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Cart and checkout tests">
+        <classes>
+            <class name="by.teachmeskills.CartTest">
+                <methods>
+                    <include name="checkItemInCart(String productName)"/>
+                    <include name="checkPriceInCart(String productName)"/>
+                </methods>
+            </class>
+            <class name="by.teachmeskills.CheckoutTest">
+                <methods>
+                    <include name="checkCheckoutButtonOpensCheckoutPage()"/>
+                </methods>
+            </class>
+            <class name="by.teachmeskills.SuccessOrderFlowTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,12 +1,13 @@
 package by.teachmeskills;
 
-import by.teachmeskills.steps.Login;
 import by.teacmeskills.page.CartPage;
 import by.teacmeskills.page.ProductsPage;
+import by.teacmeskills.step.CartSteps;
+import by.teacmeskills.step.LoginSteps;
+import by.teacmeskills.step.ProductsSteps;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -19,8 +20,8 @@ public class CartTest extends BaseTest {
 
     @BeforeClass
     public void passRegistration() {
-        Login login = new Login();
-        login.loginWithValidCredentials(driver);
+        LoginSteps loginSteps = new LoginSteps(driver);
+        loginSteps.loginAsStandardUser();
     }
 
     @DataProvider
@@ -30,17 +31,16 @@ public class CartTest extends BaseTest {
 
     @Test(dataProvider = "products")
     public void checkAddItemToCartButtonAfterClickChangesToRemove(String productName) {
-        ProductsPage productsPage = new ProductsPage(driver);
-        productsPage.addItemToCart(productName);
+        new ProductsSteps(driver).addProductToCart(productName);
         assertTrue(new ProductsPage(driver).getDeleteButton(productName).isDisplayed(),
                 "Add button wasn't changed to remove");
-        productsPage.removeItemFromCartFromProductListPage(productName);
+        new ProductsSteps(driver).deleteProductFromCart(productName);
     }
 
     @Test(dataProvider = "products")
     public void checkRemoveButtonAfterClickChangesToAddToCart(String productName) {
-        new ProductsPage(driver)
-                .addItemToCart(productName)
+        new ProductsSteps(driver)
+                .addProductToCart(productName)
                 .removeItemFromCartFromProductListPage(productName);
         assertTrue(new ProductsPage(driver).getAddButton(productName).isDisplayed(),
                 "Add to cart button should be displayed");
@@ -50,36 +50,30 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Test(dataProvider = "products")
     public void checkItemInCart(String productName) {
-        CartPage cartPage = new ProductsPage(driver)
-                .addItemToCart(productName)
-                .passToCart();
-        String itemNameInCartLocator = "//div[text()='%s']";
-        assertTrue(driver.findElement(By.xpath(String.format(itemNameInCartLocator, productName))).isDisplayed(),
+        new ProductsSteps(driver).addProductToCart(productName)
+                .openCart();
+        assertTrue(new CartPage(driver).isItemInCart(productName),
                 "There is no such item in the cart");
-        cartPage.clickContinueShopping();
-        new ProductsPage(driver).removeItemFromCartFromProductListPage(productName);
+        new ProductsSteps(driver).deleteProductFromCart(productName);
     }
 
     @Test(dataProvider = "products")
     public void checkPriceInCart(String productName) {
         String expectedPrice = new ProductsPage(driver).getPrice(productName);
-        CartPage cartPage = new ProductsPage(driver)
-                .addItemToCart(productName)
-                .passToCart();
+        new ProductsSteps(driver).addProductToCart(productName)
+                .openCart();
         String actualPrice = new CartPage(driver).getItemPrice(productName);
         assertEquals(actualPrice, expectedPrice, "Prices in catalog and in the cart are different");
-        cartPage.clickContinueShopping();
-        new ProductsPage(driver).removeItemFromCartFromProductListPage(productName);
+        new ProductsSteps(driver).deleteProductFromCart(productName);
     }
-
-    /*private void passToProductList() {
-        driver.findElement(By.id("react-burger-menu-btn")).click();
-        driver.findElement(By.id("inventory_sidebar_link")).click();
-    }*/
 
     @Test
     public void checkContinueShoppingButton() {
-        assertThat(login().openCart().clickContinueShopping().isPageOpened())
+        assertThat(new LoginSteps(driver)
+                .loginAsStandardUser()
+                .openCart()
+                .clickContinueShopping()
+                .isPageOpened())
                 .as("Product page should be opened after clicking ContinueShopping button")
                 .isTrue();
     }
@@ -87,7 +81,9 @@ public class CartTest extends BaseTest {
     @Test
     public void checkAddRemoveProductButton() {
         String productName = "Sauce Labs Bolt T-Shirt";
-        CartPage cartPage = login().addProductToCart(productName).openCart();
+        CartPage cartPage = new ProductsSteps(driver)
+                .addProductToCart(productName)
+                .openCart();
         assertThat(cartPage.isItemInCart(productName))
                 .as("Added product should be displayed in cart")
                 .isTrue();

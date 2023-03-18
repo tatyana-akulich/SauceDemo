@@ -10,11 +10,6 @@ import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
 
-    /*@BeforeMethod(alwaysRun = true)
-    public void getHomePage() {
-        driver.get("https://www.saucedemo.com/");
-    }*/
-
     @Step("Login as standard user")
     @Test
     public void checkValidCredentials() {

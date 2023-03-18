@@ -2,7 +2,6 @@ package by.teachmeskills;
 
 import by.teacmeskills.page.CartPage;
 import by.teacmeskills.page.ProductsPage;
-import by.teacmeskills.step.CartSteps;
 import by.teacmeskills.step.LoginSteps;
 import by.teacmeskills.step.ProductsSteps;
 import io.qameta.allure.Severity;
@@ -31,10 +30,11 @@ public class CartTest extends BaseTest {
 
     @Test(dataProvider = "products")
     public void checkAddItemToCartButtonAfterClickChangesToRemove(String productName) {
-        new ProductsSteps(driver).addProductToCart(productName);
+        ProductsSteps productsSteps = new ProductsSteps(driver);
+        productsSteps.addProductToCart(productName);
         assertTrue(new ProductsPage(driver).getDeleteButton(productName).isDisplayed(),
                 "Add button wasn't changed to remove");
-        new ProductsSteps(driver).deleteProductFromCart(productName);
+        productsSteps.deleteProductFromCart(productName);
     }
 
     @Test(dataProvider = "products")
@@ -50,11 +50,12 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Test(dataProvider = "products")
     public void checkItemInCart(String productName) {
-        new ProductsSteps(driver).addProductToCart(productName)
+        ProductsSteps productsSteps = new ProductsSteps(driver);
+        productsSteps.addProductToCart(productName)
                 .openCart();
         assertTrue(new CartPage(driver).isItemInCart(productName),
                 "There is no such item in the cart");
-        new ProductsSteps(driver).deleteProductFromCart(productName);
+        productsSteps.deleteProductFromCart(productName);
     }
 
     @Test(dataProvider = "products")

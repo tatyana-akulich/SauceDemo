@@ -8,6 +8,11 @@ public class LoginSteps {
     private WebDriver driver;
     private LoginPage loginPage;
 
+    private static final String STANDARD_USER = "standard_user";
+    private static final String LOCKED_OUT_USER = "locked_out_user";
+    private static final String PERFORMANCE_GLITCH_USER = "performance_glitch_user";
+    private static final String STANDARD_PASSWORD = "secret_sauce";
+
     public LoginSteps(WebDriver driver) {
         this.driver = driver;
         loginPage = new LoginPage(driver);
@@ -15,21 +20,26 @@ public class LoginSteps {
 
     public ProductsPage loginAs(String name, String password) {
         return loginPage.open()
-                .loginAs(name, password);
+                .enterLogin(name)
+                .enterPassword(password)
+                .submitCredentials();
     }
 
     public ProductsPage loginAsStandardUser() {
-        return loginPage.open()
-                .loginAsStandardUser();
+        loginPage.open();
+        return loginAs(STANDARD_USER, STANDARD_PASSWORD);
     }
 
     public LoginPage loginAsLockedOutUser() {
-        return loginPage.open()
-                .loginAsLockedOutUser();
+        loginPage.open()
+                .enterLogin(LOCKED_OUT_USER)
+                .enterPassword(STANDARD_PASSWORD)
+                .submitCredentials();
+        return loginPage;
     }
 
     public ProductsPage loginAsPerformanceGlitchUser() {
-        return loginPage.open()
-                .loginAsPerformanceGlitchUser();
+        loginPage.open();
+        return loginAs(PERFORMANCE_GLITCH_USER, STANDARD_PASSWORD);
     }
 }

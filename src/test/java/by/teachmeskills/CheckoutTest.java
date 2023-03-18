@@ -1,7 +1,6 @@
 package by.teachmeskills;
 
 import by.teacmeskills.page.CheckoutPage;
-import by.teacmeskills.page.LoginPage;
 import by.teacmeskills.page.ProductsPage;
 import by.teacmeskills.step.LoginSteps;
 import org.testng.annotations.Test;

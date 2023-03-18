@@ -1,10 +1,7 @@
 package by.teachmeskills;
 
-import by.teacmeskills.page.LoginPage;
-import by.teacmeskills.page.ProductsPage;
 import by.teacmeskills.step.LoginSteps;
 import io.qameta.allure.*;
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 

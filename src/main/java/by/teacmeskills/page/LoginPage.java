@@ -18,14 +18,6 @@ public class LoginPage extends BasePage {
     public static final String USER_NAME_ERROR = "Epic sadface: Username is required";
     public static final String USER_LOCKED_OUT_ERROR = "Epic sadface: Sorry, this user has been locked out.";
 
-    private static final String STANDARD_USER = "standard_user";
-    private static final String LOCKED_OUT_USER = "locked_out_user";
-    private static final String PERFORMANCE_GLITCH_USER = "performance_glitch_user";
-    private static final String STANDARD_PASSWORD = "secret_sauce";
-
-    private static final String DEFAULT_USER = STANDARD_USER;
-    private static final String DEFAULT_PASSWORD = STANDARD_PASSWORD;
-
     public LoginPage(WebDriver driver) {
         super(driver);
     }
@@ -42,38 +34,22 @@ public class LoginPage extends BasePage {
         return driver.findElement(LOGIN_BUTTON).isDisplayed();
     }
 
-    public ProductsPage loginAsDefaultUser() {
-        log.info("Login with default - standard user {} and password {}", DEFAULT_USER, DEFAULT_PASSWORD);
-        loginAs(DEFAULT_USER, DEFAULT_PASSWORD);
-        return new ProductsPage(driver);
-    }
-
-    public ProductsPage loginAs(String userName, String password) {
-        log.info("Login with user {} and password {}", userName, password);
+    public LoginPage enterLogin(String userName) {
+        log.info("Entering login - {}", userName);
         driver.findElement(USER_NAME).sendKeys(userName);
-        driver.findElement(PASSWORD).sendKeys(password);
-        driver.findElement(LOGIN_BUTTON).click();
-        return new ProductsPage(driver);
-    }
-
-    public ProductsPage loginAsStandardUser() {
-        log.info("Login with standard user {} and password {}", DEFAULT_USER, DEFAULT_PASSWORD);
-        loginAs(STANDARD_USER, STANDARD_PASSWORD);
-        return new ProductsPage(driver);
-    }
-
-    public LoginPage loginAsLockedOutUser() {
-        log.info("Login with locked user {} and password {}",LOCKED_OUT_USER, STANDARD_PASSWORD);
-        loginAs(LOCKED_OUT_USER, STANDARD_PASSWORD);
         return this;
     }
 
-    public ProductsPage loginAsPerformanceGlitchUser() {
-        log.info("Login with glitch user {} and password {}",PERFORMANCE_GLITCH_USER, DEFAULT_PASSWORD);
-        loginAs(PERFORMANCE_GLITCH_USER, STANDARD_PASSWORD);
-        ProductsPage productsPage = new ProductsPage(driver);
-        productsPage.isPageOpened();
-        return productsPage;
+    public LoginPage enterPassword(String password) {
+        log.info("Entering password - {}", password);
+        driver.findElement(PASSWORD).sendKeys(password);
+        return this;
+    }
+
+    public ProductsPage submitCredentials() {
+        log.info("Submitting credentials");
+        driver.findElement(LOGIN_BUTTON).click();
+        return new ProductsPage(driver);
     }
 
     public String getErrorText() {

@@ -1,7 +1,6 @@
 package by.teachmeskills;
 
 import by.teacmeskills.page.CheckoutCompletePage;
-import by.teacmeskills.page.LoginPage;
 import by.teacmeskills.step.CheckoutSteps;
 import by.teacmeskills.step.LoginSteps;
 import org.apache.commons.lang3.StringUtils;

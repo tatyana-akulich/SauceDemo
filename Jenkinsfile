@@ -6,6 +6,10 @@ pipeline {
         maven "3.8.6"
     }
 
+parameters {
+ gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+}
+
     stages {
         stage('Build') {
             steps {

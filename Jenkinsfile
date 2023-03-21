@@ -8,6 +8,7 @@ pipeline {
 
 parameters {
  gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+ properties([parameters([booleanParam(defaultValue: true, name: 'HEADLESS')]), [$class: 'JobLocalConfiguration', changeReasonComment: '']])
 }
 
     stages {

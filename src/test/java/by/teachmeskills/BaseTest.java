@@ -47,8 +47,4 @@ public class BaseTest {
             driver.quit();
         }
     }
-
-    protected ProductsPage login() {
-        return new LoginPage(driver).open().loginAsStandardUser();
-    }
 }

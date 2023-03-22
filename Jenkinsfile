@@ -24,7 +24,7 @@ parameters {
                 //sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
                 // To run Maven on a Windows agent, use
-                bat "mvn clean test -DsuiteXMLFile=src/test/resources/${params.XMLfile}"
+                bat "mvn clean test -DsuiteXmlFile=src/test/resources/${params.XMLfile}"
             }
         }
         stage('reports') {

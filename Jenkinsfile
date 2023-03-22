@@ -8,7 +8,10 @@ pipeline {
 
 parameters {
  gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
- properties([parameters([booleanParam(defaultValue: true, name: 'HEADLESS')]), [$class: 'JobLocalConfiguration', changeReasonComment: '']])
+ booleanParam(defaultValue: true, name: 'HEADLESS')
+ choice(choices: ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Sauce Labs Bolt T-Shirt', 'Sauce Labs Fleece Jacket'],
+ description: 'Choose a product to check, if it is displayed in catalog', name: 'ProductName')
+ choice(choices: ['smoke.xml', 'regression.xml', 'testng.xml'], description: 'Choose xml file to run tests', name: 'XMLfile')
 }
 
     stages {
@@ -21,7 +24,7 @@ parameters {
                 //sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
                 // To run Maven on a Windows agent, use
-                bat "mvn -DsuiteXMLFile=src/test/resources/smoke.xml clean test"
+                bat "mvn clean test -DsuiteXMLFile=src/test/resources/${params.XMLfile}"
             }
         }
         stage('reports') {
